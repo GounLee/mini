@@ -13,20 +13,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@RequestMapping("board")
 @Controller
 public class BoardController {
 
     @Autowired
     private BoardService boardService;
 
-    @GetMapping("/board/write")             // localhost:8090/project/write
+    @GetMapping("/write")
     public String boardWriteForm() {
 
-      return "boardwrite";
+      return "boardPages/boardwrite";
   }
 
-    @PostMapping("/board/writepro")
+    @PostMapping("/writepro")
     public String boardWritePro(Board board, Model model) {
 
         boardService.write(board);
@@ -34,10 +36,10 @@ public class BoardController {
         model.addAttribute("message", "글 작성이 완료되었습니다.");
         model.addAttribute("searchUrl", "/board/list");
 
-        return "message";
+        return "boardPages/message";
     }
 
-    @GetMapping("/board/list")
+    @GetMapping("/list")
     public String boardList(Model model, @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.DESC)
             Pageable pageable, String searchKeyword) {
 
@@ -58,17 +60,17 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        return "boardList";
+        return "boardPages/boardList";
         }
 
-    @GetMapping("/board/view")
+    @GetMapping("/view")
     public String boardView(Model model, Integer id) {
 
         model.addAttribute("board", boardService.boardView(id));
-        return "boardview";
+        return "boardPages/boardview";
     }
 
-    @GetMapping("/board/delete")
+    @GetMapping("/delete")
     public String boardDelete(Integer id) {
 
         boardService.boardDelete(id);
@@ -76,15 +78,15 @@ public class BoardController {
         return "redirect:/board/list";
         }
 
-    @GetMapping("/board/modify/{id}")
+    @GetMapping("/modify/{id}")
     public String boardModify(@PathVariable("id") Integer id, Model model) {
 
         model.addAttribute("board", boardService.boardView(id));
 
-        return "boardmodify";
+        return "boardPages/boardmodify";
     }
 
-    @PostMapping("/board/update/{id}")
+    @PostMapping("/update/{id}")
     public String boardUpdate(@PathVariable("id") Integer id, Board board) {
 
         Board boardTemp = boardService.boardView(id);
