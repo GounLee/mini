@@ -20,22 +20,55 @@ import java.util.List;
 public class MemberController {
     private  final MemberService memberService;
 
+    //회원가입 페이지
     @GetMapping("/join-form")
     public String saveForm(){
         return "memberPages/join";
     }
 
+    //회원가입 처리
+    @PostMapping("/join")
+    public String save(@ModelAttribute MemberDTO memberDTO) {
+        memberService.save(memberDTO);
+        return "memberPages/login";
+    }
+
+    //로그인 페이지
     @GetMapping("/login-form")
     public String loginForm(){
         return "memberPages/login";
     }
 
-    @PostMapping("/join")
-    public String save(@ModelAttribute MemberDTO memberDTO) {
-        memberService.save(memberDTO);
-        return "memberPages/login";
-
+    //로그인 결과 페이지
+    @GetMapping("/login/result")
+    public String LoginResult(){
+        return "/loginSuccess";
     }
+
+    //로그아웃 결과 페이지
+    @GetMapping("/logout/result")
+    public String Logout(){
+        return "/logout";
+    }
+
+    //접근 거부 페이지
+    @GetMapping("/denied")
+    public String Denied(){
+        return "/denied";
+    }
+
+    //내 정보 페이지
+    @GetMapping("/info")
+    public String MyInfo(){
+        return "/myinfo";
+    }
+
+    //어드민 페이지
+    @GetMapping("/admin")
+    public String Admin(){
+        return "/admin";
+    }
+
     @PostMapping("/login")
     public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);

@@ -10,6 +10,7 @@ import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.*;
@@ -22,7 +23,8 @@ public class MemberTest {
 
     public MemberDTO newMember(int i){
         MemberDTO member =
-                new MemberDTO("테스트용이메일"+i, "테스트용비밀번호"+i,"테스트용이름"+i,99+i,"테스트용전화번호"+i);
+                new MemberDTO("테스트용이메일"+i, "테스트용비밀번호"+i,"테스트용이름"+i,"테스트용닉네임"+i, "테스트용전화번호"+i,
+                        "테스트용성별"+i, 99+i, "테스트용지역"+i);
         return member;
     }
 
@@ -49,7 +51,11 @@ public class MemberTest {
         String memberName = "로그인용이름";
         int memberAge = 99;
         String memberMobile = "로그인용전화번호";
-        MemberDTO memberDTO = new MemberDTO(memberEmail, memberPassword, memberName, memberAge, memberMobile);
+        String memberGender = "로그인용성별";
+        String memberLocation = "로그인용지역";
+        String memberNickName = "로그인용닉네임";
+        MemberDTO memberDTO = new MemberDTO(memberEmail, memberPassword, memberName, memberNickName,
+                 memberMobile,  memberGender, memberAge, memberLocation);
         Long savedId = memberService.save(memberDTO);
         //로그인 객체 생성 후 로그인
         MemberDTO loginMemberDTO = new MemberDTO();

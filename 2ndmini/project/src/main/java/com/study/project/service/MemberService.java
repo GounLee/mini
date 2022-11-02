@@ -20,8 +20,7 @@ public class MemberService {
         //memberRepository.save(MemberEntity.toSaveEntity(memberDTO));
         //MemberEntity memberEntity = memberRepository.save(MemberEntity.toSaveEntity(memberDTO));
         MemberEntity memberEntity = MemberEntity.toSaveEntity(memberDTO);
-        Long savedId = memberRepository.save(memberEntity).getId();
-        return savedId;
+        return memberRepository.save(memberEntity).getId();
     }
 
     public MemberDTO login(MemberDTO memberDTO) {
