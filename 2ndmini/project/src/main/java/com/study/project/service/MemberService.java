@@ -17,10 +17,12 @@ public class MemberService {
     private  final MemberRepository memberRepository;
 
     public Long save(MemberDTO memberDTO) {
+        //DTO를 바로 쓸 수 없어서 Entity로 저장하는 과정이 필요.(Entity에서 작업)
         //memberRepository.save(MemberEntity.toSaveEntity(memberDTO));
         //MemberEntity memberEntity = memberRepository.save(MemberEntity.toSaveEntity(memberDTO));
         MemberEntity memberEntity = MemberEntity.toSaveEntity(memberDTO);
-        return memberRepository.save(memberEntity).getId();
+        Long savedId = memberRepository.save(memberEntity).getId();
+        return savedId;
     }
 
     public MemberDTO login(MemberDTO memberDTO) {
@@ -44,10 +46,14 @@ public class MemberService {
 
     }
 
+
+
+    // Test를 위한 것?
     public MemberDTO findById(Long id){
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(id);
         if (optionalMemberEntity.isPresent()){
-            //return MemberDTO.toMemberDTO(optionalMemberEntity.get());
+            // return MemberDTO.toMemberDTO(optionalMemberEntity.get());
+            // 위에 한줄로 축약가능
             MemberEntity memberEntity = optionalMemberEntity.get();
             MemberDTO memberDTO = MemberDTO.toMemberDTO(memberEntity);
             return memberDTO;
@@ -57,13 +63,32 @@ public class MemberService {
     }
 
     public List<MemberDTO> findAll() {
+        // Entity를 각각 가져와서 DTO로 변환해서 List로 반환
         List<MemberEntity> memberEntityList = memberRepository.findAll();
         List<MemberDTO> memberDTOList = new ArrayList<>();
         for(MemberEntity member: memberEntityList){
             //MemberDTO memberDTO = MemberDTO.toMemberDTO(member);
             //memberDTOList.add(memberDTO);
+            //위에 두줄 줄여서 아래 한줄로
             memberDTOList.add(MemberDTO.toMemberDTO(member));
         }
         return memberDTOList;
+    }
+
+    public void delete(Long id) {
+        memberRepository.deleteById(id);
+    }
+
+    public void update(MemberDTO memberDTO) {
+        memberRepository.save(MemberEntity.toUpdateEntity(memberDTO));
+    }
+
+    public String emailCheck(String memberEmail) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(memberEmail);
+        if (optionalMemberEntity.isEmpty()){
+            return "ok";
+        } else {
+            return "no";
+        }
     }
 }

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
@@ -25,39 +24,33 @@ public class MemberEntity {
     @Column(length = 20)
     private String memberName;
 
-    @Column(length = 20)
-    private String memberNickName;
+    @Column
+    private int memberAge;
 
     @Column(length = 30)
     private String memberMobile;
 
-    @Column(length = 20)
-    private String memberGender;
-
-    @Column
-    private int memberAge;
-
-    @Column(length = 20)
-    private String memberLocation;
-
-    @Column(length = 20)
-    private LocalDateTime join_date;
-
+    //DTO를 Entity로 저장하는 과정.
     public static MemberEntity toSaveEntity(MemberDTO memberDTO){
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setMemberEmail(memberDTO.getMemberEmail());
         memberEntity.setMemberPassword(memberDTO.getMemberPassword());
         memberEntity.setMemberName(memberDTO.getMemberName());
-        memberEntity.setMemberNickName(memberDTO.getMemberNickName());
-        memberEntity.setMemberMobile(memberDTO.getMemberMobile());
-        memberEntity.setMemberGender(memberDTO.getMemberGender());
         memberEntity.setMemberAge(memberDTO.getMemberAge());
-        memberEntity.setMemberLocation(memberDTO.getMemberLocation());
+        memberEntity.setMemberMobile(memberDTO.getMemberMobile());
         return memberEntity;
     }
 
-    @PrePersist
-    public void Join_date() {
-        this.join_date = LocalDateTime.now();
+
+
+    public static MemberEntity toUpdateEntity(MemberDTO memberDTO){
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setId(memberDTO.getId());
+        memberEntity.setMemberEmail(memberDTO.getMemberEmail());
+        memberEntity.setMemberPassword(memberDTO.getMemberPassword());
+        memberEntity.setMemberName(memberDTO.getMemberName());
+        memberEntity.setMemberAge(memberDTO.getMemberAge());
+        memberEntity.setMemberMobile(memberDTO.getMemberMobile());
+        return memberEntity;
     }
 }
